@@ -15,6 +15,11 @@ Run `ng generate component component-name` to generate a new component. You can 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
 ## Running unit tests
+![Screenshot 2024-07-19 020803](https://github.com/user-attachments/assets/4f12f8be-fb2f-4be8-8888-ef4fae1be049)
+## Code Coverage Report
+
+The code coverage report can be found in the `coverage` folder. To view the report, open the `index.html` file in your browser.
+Run ng test --code-coverage
 
 Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
