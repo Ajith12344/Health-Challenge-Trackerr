@@ -1,0 +1,28 @@
+<div class="flex justify-center items-center min-h-screen bg-gray-800">
+    <form [formGroup]="workoutForm" (ngSubmit)="onSubmit()" class="max-w-sm mx-auto bg-gray-900 shadow-md rounded-lg px-8 py-6 text-white">
+      <h4 class="text-3xl font-bold mb-4 text-center py-2 rounded-lg">Enter User's Details</h4>
+  
+      <div class="mb-4">
+        <label for="username" class="block text-gray-300">User Name:</label>
+        <input id="username" formControlName="username" type="text" class="form-input mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm bg-gray-700 text-gray-200">
+      </div>
+  
+      <div class="mb-4">
+        <label for="workoutType" class="block text-gray-300">Workout Type:</label>
+        <select id="workoutType" formControlName="workoutType" class="form-select mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm bg-gray-700 text-gray-200">
+          <option value="">Select Workout Type</option>
+          <option *ngFor="let type of workoutTypes" [value]="type">{{ type }}</option>
+        </select>
+      </div>
+  
+      <div class="mb-4">
+        <label for="workoutMinutes" class="block text-gray-300">Workout Minutes:</label>
+        <input id="workoutMinutes" formControlName="workoutMinutes" type="number" class="form-input mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm bg-gray-700 text-gray-200">
+      </div>
+  
+      <button type="submit" class="btn btn-primary block w-full px-3 py-2 rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm">
+        Add Workout
+      </button>
+    </form>
+  </div>
+  
