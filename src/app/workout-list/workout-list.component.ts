@@ -18,8 +18,10 @@ interface AggregatedWorkout {
   selector: 'app-workout-list',
   templateUrl: './workout-list.component.html',
   styleUrls: ['./workout-list.component.css']
+  
 })
 export class WorkoutListComponent implements OnChanges {
+  [x: string]: any;
   @Input() workouts: Workout[] = [];
   aggregatedWorkouts: AggregatedWorkout[] = [];
   paginatedWorkouts: AggregatedWorkout[] = [];

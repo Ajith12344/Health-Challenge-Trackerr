@@ -7,6 +7,7 @@ import { WorkoutService } from '../workout.service';
   styleUrls: ['./workout-search.component.css']
 })
 export class WorkoutSearchComponent implements OnInit {
+  [x: string]: any;
   @Output() searchResults = new EventEmitter<any[]>();
   
   searchTerm: string = '';

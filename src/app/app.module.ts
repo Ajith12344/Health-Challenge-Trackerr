@@ -12,14 +12,17 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { WorkoutService } from './workout.service'; // Ensure the service is correctly imported
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 @NgModule({
   declarations: [
     AppComponent,
     WorkoutFormComponent,
     WorkoutListComponent,
     WorkoutSearchComponent,
-    WorkoutChartComponent
-   
+    WorkoutChartComponent,
   ],
   imports: [
     BrowserModule,
@@ -28,7 +31,7 @@ import { WorkoutService } from './workout.service'; // Ensure the service is cor
     TableModule,
     FormsModule,
     MatPaginatorModule,
-    MatTableModule
+    MatTableModule,BrowserAnimationsModule,NoopAnimationsModule
   ],
   providers: [
     provideClientHydration(),

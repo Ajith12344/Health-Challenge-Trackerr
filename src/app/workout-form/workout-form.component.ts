@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { WorkoutService } from '../workout.service'; // Adjust path as per your project
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { WorkoutService } from '../workout.service';
 
 @Component({
   selector: 'app-workout-form',
@@ -9,14 +9,14 @@ import { WorkoutService } from '../workout.service'; // Adjust path as per your 
 })
 export class WorkoutFormComponent implements OnInit {
   workoutForm!: FormGroup;
-  workoutTypes: string[] = ['Running', 'Cycling', 'Swimming']; // Define your workout types here
+  workoutTypes: string[] = ['Running', 'Cycling', 'Swimming'];
 
   constructor(private fb: FormBuilder, private workoutService: WorkoutService) {}
 
   ngOnInit(): void {
     this.workoutForm = this.fb.group({
       username: ['', Validators.required],
-      workoutType: ['', Validators.required], // Initialize workoutType as required
+      workoutType: ['', Validators.required],
       workoutMinutes: ['', [Validators.required, Validators.min(1)]]
     });
   }
@@ -24,7 +24,11 @@ export class WorkoutFormComponent implements OnInit {
   onSubmit(): void {
     if (this.workoutForm.valid) {
       this.workoutService.addWorkout(this.workoutForm.value);
-      this.workoutForm.reset();
+      this.resetForm();
     }
+  }
+
+  resetForm(): void {
+    this.workoutForm.reset();
   }
 }
