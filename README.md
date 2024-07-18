@@ -15,7 +15,7 @@ Run `ng generate component component-name` to generate a new component. You can 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
 ## Running unit tests
-![Screenshot 2024-07-19 024841](https://github.com/user-attachments/assets/4c29bd83-d19e-45fa-bbd5-85a487255b7f)
+![Screenshot 2024-07-19 030639](https://github.com/user-attachments/assets/36713918-b0dc-4254-b922-450e0e4f32a4)
 
 ## Code Coverage Report
 
