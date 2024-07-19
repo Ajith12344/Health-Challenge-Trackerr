@@ -10,8 +10,8 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'workout', component: WorkoutFormComponent },
   { path: 'charts', component: WorkoutChartComponent },
-  { path: 'search', component:WorkoutListComponent }
-  
+  { path: 'search', component:WorkoutListComponent },
+  { path: '**', redirectTo: '/home', pathMatch: 'full' } 
 ];
 
 @NgModule({
