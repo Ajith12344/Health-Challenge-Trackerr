@@ -7,7 +7,9 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 ## Screen-shots
-![Screenshot 2024-07-19 031938](https://github.com/user-attachments/assets/1fdc0992-bb32-4f5f-a6fa-8fd4e453f546)
+![Screenshot 2024-07-19 173305](https://github.com/user-attachments/assets/798b1edb-5194-42ac-9584-4bb4887be435)
+
+s/assets/1fdc0992-bb32-4f5f-a6fa-8fd4e453f546)
 
 ## Code scaffolding
 
@@ -18,7 +20,8 @@ Run `ng generate component component-name` to generate a new component. You can 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
 ## Running unit tests
-![Screenshot 2024-07-19 030639](https://github.com/user-attachments/assets/36713918-b0dc-4254-b922-450e0e4f32a4)
+![Screenshot 2024-07-19 164643](https://github.com/user-attachments/assets/5f5399fa-ad3d-4c34-bdaf-1253c229e8b1)
+
 
 ## Code Coverage Report
 
