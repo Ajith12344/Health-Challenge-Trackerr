@@ -1,5 +1,7 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, OnChanges, SimpleChanges } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
+import { Router } from '@angular/router';
+import { NgModel } from '@angular/forms'; // Import NgModel for two-way binding
 
 interface Workout {
   username: string;
@@ -18,11 +20,9 @@ interface AggregatedWorkout {
   selector: 'app-workout-list',
   templateUrl: './workout-list.component.html',
   styleUrls: ['./workout-list.component.css']
-  
 })
-export class WorkoutListComponent implements OnChanges {
-  [x: string]: any;
-  @Input() workouts: Workout[] = [];
+export class WorkoutListComponent implements OnInit, OnChanges {
+  workouts: Workout[] = []; // Initialize as empty array
   aggregatedWorkouts: AggregatedWorkout[] = [];
   paginatedWorkouts: AggregatedWorkout[] = [];
   pageSize: number = 5;
@@ -31,10 +31,29 @@ export class WorkoutListComponent implements OnChanges {
   pageSizeOptions: number[] = [5, 10, 20];
   sumTotalMinutes: number = 0; // Variable to store the overall sum of total minutes
 
+  // Search and filter properties
+  searchQuery: string = '';
+  selectedFilter: string = '';
+  workoutTypes: string[] = ['Running', 'Cycling', 'Swimming']; // Define your workout types here
+
+  constructor(private router: Router) {} // Inject Router
+
+  ngOnInit(): void {
+    this.loadWorkoutsFromLocalStorage();
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['workouts']) {
       this.updateAggregatedWorkouts();
       this.updatePaginatedWorkouts();
+    }
+  }
+
+  loadWorkoutsFromLocalStorage(): void {
+    const storedWorkouts = localStorage.getItem('workouts');
+    if (storedWorkouts) {
+      this.workouts = JSON.parse(storedWorkouts);
+      this.applyFilters(); // Apply filters after loading workouts
     }
   }
 
@@ -65,7 +84,7 @@ export class WorkoutListComponent implements OnChanges {
     this.aggregatedWorkouts = Object.values(aggregated);
     this.totalItems = this.aggregatedWorkouts.length; // Update total items for paginator
 
-   
+    this.updatePaginatedWorkouts(); // Ensure pagination is updated
   }
 
   updatePaginatedWorkouts(): void {
@@ -79,5 +98,55 @@ export class WorkoutListComponent implements OnChanges {
     this.pageSize = event.pageSize;
     this.updatePaginatedWorkouts();
   }
-  
+
+  applyFilters(): void {
+    let filteredWorkouts = this.workouts;
+
+    if (this.searchQuery) {
+      filteredWorkouts = filteredWorkouts.filter(workout =>
+        workout.username.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+    }
+
+    if (this.selectedFilter) {
+      filteredWorkouts = filteredWorkouts.filter(workout =>
+        workout.workoutType === this.selectedFilter
+      );
+    }
+
+    // Update aggregated and paginated workouts based on filtered results
+    this.aggregatedWorkouts = this.aggregateWorkouts(filteredWorkouts);
+    this.totalItems = this.aggregatedWorkouts.length;
+    this.updatePaginatedWorkouts();
+  }
+
+  aggregateWorkouts(workouts: Workout[]): AggregatedWorkout[] {
+    const aggregated: { [username: string]: AggregatedWorkout } = {};
+    this.sumTotalMinutes = 0;
+
+    workouts.forEach(workout => {
+      if (!aggregated[workout.username]) {
+        aggregated[workout.username] = {
+          username: workout.username,
+          workouts: [],
+          numWorkouts: 0,
+          totalMinutes: 0
+        };
+      }
+      const existingWorkout = aggregated[workout.username].workouts.find(w => w.workoutType === workout.workoutType);
+      if (existingWorkout) {
+        existingWorkout.workoutMinutes += Number(workout.workoutMinutes);
+      } else {
+        aggregated[workout.username].workouts.push({ ...workout, workoutMinutes: Number(workout.workoutMinutes) });
+      }
+      aggregated[workout.username].numWorkouts++;
+      aggregated[workout.username].totalMinutes += Number(workout.workoutMinutes);
+    });
+
+    return Object.values(aggregated);
+  }
+
+  navigateToCharts(): void {
+    this.router.navigate(['/charts']);
+  }
 }

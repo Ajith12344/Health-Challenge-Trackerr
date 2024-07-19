@@ -16,6 +16,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { HomeComponent } from './home/home.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,6 +24,7 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
     WorkoutListComponent,
     WorkoutSearchComponent,
     WorkoutChartComponent,
+    HomeComponent,
   ],
   imports: [
     BrowserModule,

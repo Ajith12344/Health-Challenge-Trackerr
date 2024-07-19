@@ -1,26 +1,37 @@
-<div class="container mx-auto p-4">
-    <h4 class="text-3xl font-bold mb-4 text-center text-white rounded-lg">Vizualization Of Workouts <h6>(click on user..)</h6></h4>
+<div class="bg-gray-900 min-h-screen flex items-center justify-center">
+  <div class="container mx-auto p-4 bg-gray-800 text-white rounded-lg shadow-lg">
+    <h4 class="text-3xl font-bold mb-4 text-center text-white rounded-lg">Visualization Of Workouts</h4>
+    <h6 class="text-center text-gray-400 mb-8">(click on user..)</h6>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      
-      <div class="bg-white shadow-md rounded-lg overflow-hidden">
-        <table class="min-w-full bg-white">
+      <!-- Username Table -->
+      <div class="bg-gray-700 shadow-md rounded-lg overflow-hidden">
+        <table class="min-w-full bg-gray-700 text-white">
           <thead>
             <tr>
               <th class="py-2 px-4 bg-gray-800 text-white">Username</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let username of uniqueUsernames" (click)="selectUser(username)" class="hover:bg-gray-200 cursor-pointer">
-              <td class="py-2 px-4 border-b">{{ username }}</td>
+            <tr *ngFor="let username of uniqueUsernames" (click)="selectUser(username)" class="hover:bg-gray-600 cursor-pointer">
+              <td class="py-2 px-4 border-b border-gray-600">{{ username }}</td>
             </tr>
           </tbody>
         </table>
       </div>
-  
+
       <!-- Chart Section -->
-      <div class="bg-white p-4 rounded-lg shadow-md">
+      <div class="bg-gray-700 p-4 rounded-lg shadow-md">
         <canvas id="workoutChart" class="w-full h-auto md:h-64"></canvas>
       </div>
     </div>
+
+    <!-- Return to Home Button -->
+    <div class="mt-8 flex justify-center">
+      <button
+        (click)="navigateToHome()"
+        class="px-6 py-3 rounded-lg shadow-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-300">
+        Return to Home
+      </button>
+    </div>
   </div>
-  
+</div>

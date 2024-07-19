@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { WorkoutService } from '../workout.service';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-workout-search',
   templateUrl: './workout-search.component.html',
@@ -16,7 +16,7 @@ export class WorkoutSearchComponent implements OnInit {
   workouts: any[] = [];
   filteredWorkouts: any[] = [];
 
-  constructor(private workoutService: WorkoutService) {}
+  constructor(private workoutService: WorkoutService,private router: Router) {}
 
   ngOnInit(): void {
     this.workouts = this.workoutService.getWorkouts();
@@ -32,6 +32,9 @@ export class WorkoutSearchComponent implements OnInit {
     this.applyFilterAndSearch();
   }
 
+  navigateToHome(): void {
+    this.router.navigate(['/home']);
+  }
   private applyFilterAndSearch(): void {
     // Filter by workout type
     this.filteredWorkouts = this.workouts.filter(workout => {

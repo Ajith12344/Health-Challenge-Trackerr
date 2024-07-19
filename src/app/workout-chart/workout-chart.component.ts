@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
 import { WorkoutService, Workout } from '../workout.service';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-workout-chart',
   templateUrl: './workout-chart.component.html',
@@ -11,11 +11,13 @@ export class WorkoutChartComponent implements OnInit {
   selectedUser: string = '';
   uniqueUsernames: string[] = [];
   chart: any;
-
-  constructor(private workoutService: WorkoutService) {
+  
+  constructor(private workoutService: WorkoutService,private router: Router) {
     Chart.register(...registerables);
   }
-
+  navigateToHome(): void {
+    this.router.navigate(['/home']);
+  }
   ngOnInit(): void {
     const workouts = this.workoutService.getWorkouts();
     this.uniqueUsernames = [...new Set(workouts.map(workout => workout.username))];

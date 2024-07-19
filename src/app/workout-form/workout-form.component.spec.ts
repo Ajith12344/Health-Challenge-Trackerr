@@ -1,30 +1,38 @@
-// src/app/workout-form/workout-form.component.spec.ts
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReactiveFormsModule } from '@angular/forms';
-import { WorkoutFormComponent } from './workout-form.component';
+import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
 import { WorkoutService } from '../workout.service';
+import { WorkoutFormComponent } from './workout-form.component';
 import { of } from 'rxjs';
+import { By } from '@angular/platform-browser';
 
 describe('WorkoutFormComponent', () => {
   let component: WorkoutFormComponent;
   let fixture: ComponentFixture<WorkoutFormComponent>;
-  let workoutServiceSpy: jasmine.SpyObj<WorkoutService>;
+  let mockWorkoutService: jasmine.SpyObj<WorkoutService>;
+  let mockRouter: jasmine.SpyObj<Router>;
 
   beforeEach(async () => {
-    const spy = jasmine.createSpyObj('WorkoutService', ['addWorkout']);
+    const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
+    const workoutServiceSpy = jasmine.createSpyObj('WorkoutService', ['addWorkout']);
 
     await TestBed.configureTestingModule({
-      declarations: [WorkoutFormComponent],
-      imports: [ReactiveFormsModule],
-      providers: [{ provide: WorkoutService, useValue: spy }]
-    }).compileComponents();
-
-    workoutServiceSpy = TestBed.inject(WorkoutService) as jasmine.SpyObj<WorkoutService>;
+      declarations: [ WorkoutFormComponent ],
+      imports: [ ReactiveFormsModule ],
+      providers: [
+        FormBuilder,
+        { provide: WorkoutService, useValue: workoutServiceSpy },
+        { provide: Router, useValue: routerSpy }
+      ]
+    })
+    .compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(WorkoutFormComponent);
     component = fixture.componentInstance;
+    mockWorkoutService = TestBed.inject(WorkoutService) as jasmine.SpyObj<WorkoutService>;
+    mockRouter = TestBed.inject(Router) as jasmine.SpyObj<Router>;
     fixture.detectChanges();
   });
 
@@ -32,52 +40,82 @@ describe('WorkoutFormComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should create a form with 3 controls', () => {
-    expect(component.workoutForm.contains('username')).toBeTruthy();
-    expect(component.workoutForm.contains('workoutType')).toBeTruthy();
-    expect(component.workoutForm.contains('workoutMinutes')).toBeTruthy();
+  it('should initialize the form with default values', () => {
+    expect(component.workoutForm).toBeTruthy();
+    expect(component.workoutForm.controls['username'].value).toBe('');
+    expect(component.workoutForm.controls['workoutType'].value).toBe('');
+    expect(component.workoutForm.controls['workoutMinutes'].value).toBe('');
   });
 
-  it('should make the username control required', () => {
-    const control = component.workoutForm.get('username');
-    control?.setValue('');
-    expect(control?.valid).toBeFalsy();
+  it('should make the form controls required', () => {
+    let username = component.workoutForm.controls['username'];
+    let workoutType = component.workoutForm.controls['workoutType'];
+    let workoutMinutes = component.workoutForm.controls['workoutMinutes'];
+
+    username.setValue('');
+    workoutType.setValue('');
+    workoutMinutes.setValue('');
+
+    expect(username.invalid).toBeTrue();
+    expect(workoutType.invalid).toBeTrue();
+    expect(workoutMinutes.invalid).toBeTrue();
+
+    username.setValue('John Doe');
+    workoutType.setValue('Running');
+    workoutMinutes.setValue(30);
+
+    expect(username.valid).toBeTrue();
+    expect(workoutType.valid).toBeTrue();
+    expect(workoutMinutes.valid).toBeTrue();
   });
 
-  it('should make the workoutType control required', () => {
-    const control = component.workoutForm.get('workoutType');
-    control?.setValue('');
-    expect(control?.valid).toBeFalsy();
-  });
+  it('should store form value in local storage on submit', () => {
+    spyOn(localStorage, 'getItem').and.returnValue('[]');
+    spyOn(localStorage, 'setItem');
 
-  it('should make the workoutMinutes control required and validate it', () => {
-    const control = component.workoutForm.get('workoutMinutes');
-    control?.setValue('');
-    expect(control?.valid).toBeFalsy();
-
-    control?.setValue(0);
-    expect(control?.valid).toBeFalsy();
-
-    control?.setValue(10);
-    expect(control?.valid).toBeTruthy();
-  });
-
-  it('should call the addWorkout method on submit if form is valid', () => {
-    const workoutData = { username: 'John', workoutType: 'Running', workoutMinutes: 30 };
-    component.workoutForm.setValue(workoutData);
+    component.workoutForm.setValue({
+      username: 'John Doe',
+      workoutType: 'Running',
+      workoutMinutes: 30
+    });
 
     component.onSubmit();
 
-    expect(workoutServiceSpy.addWorkout).toHaveBeenCalledWith(workoutData);
+    const expectedWorkouts = [{
+      username: 'John Doe',
+      workoutType: 'Running',
+      workoutMinutes: 30
+    }];
+    
+    expect(localStorage.setItem).toHaveBeenCalledWith('workouts', JSON.stringify(expectedWorkouts));
   });
 
-  it('should reset the form after submit', () => {
-    spyOn(component, 'resetForm');
-    const workoutData = { username: 'John', workoutType: 'Running', workoutMinutes: 30 };
-    component.workoutForm.setValue(workoutData);
+  it('should call addWorkout method of WorkoutService on submit', () => {
+    component.workoutForm.setValue({
+      username: 'John Doe',
+      workoutType: 'Running',
+      workoutMinutes: 30
+    });
 
     component.onSubmit();
 
-    expect(component.resetForm).toHaveBeenCalled();
+    expect(mockWorkoutService.addWorkout).toHaveBeenCalledWith({
+      username: 'John Doe',
+      workoutType: 'Running',
+      workoutMinutes: 30
+    });
   });
+
+  it('should navigate to the search page on submit', () => {
+    component.workoutForm.setValue({
+      username: 'John Doe',
+      workoutType: 'Running',
+      workoutMinutes: 30
+    });
+
+    component.onSubmit();
+
+    expect(mockRouter.navigate).toHaveBeenCalledWith(['/search']);
+  });
+
 });
