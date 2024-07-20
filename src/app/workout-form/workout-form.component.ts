@@ -21,7 +21,7 @@ export class WorkoutFormComponent implements OnInit {
   ngOnInit(): void {
     this.workoutForm = this.fb.group({
       username: ['', Validators.required],
-      workoutType: ['', Validators.required], // Initialize workoutType as required
+      workoutType: ['', Validators.required], 
       workoutMinutes: ['', [Validators.required, Validators.min(1)]]
     });
   }
